@@ -393,13 +393,23 @@ ExpressionTreeNode Operation::PowerConstant::differentiate(const std::vector<Exp
 ExpressionTreeNode Operation::Min::differentiate(const std::vector<ExpressionTreeNode>& children, const std::vector<ExpressionTreeNode>& childDerivs, const std::string& variable) const {
     ExpressionTreeNode step(new Operation::Step(),
                             ExpressionTreeNode(new Operation::Subtract(), children[0], children[1]));
-    return ExpressionTreeNode(new Operation::Select(), {step, childDerivs[1], childDerivs[0]});
+    std::vector<ExpressionTreeNode> tmp;
+    tmp.push_back(step);
+    tmp.push_back(childDerivs[1]);
+    tmp.push_back(childDerivs[0]);
+//     return ExpressionTreeNode(new Operation::Select(), {step, childDerivs[1], childDerivs[0]});
+    return ExpressionTreeNode(new Operation::Select(), tmp);
 }
 
 ExpressionTreeNode Operation::Max::differentiate(const std::vector<ExpressionTreeNode>& children, const std::vector<ExpressionTreeNode>& childDerivs, const std::string& variable) const {
     ExpressionTreeNode step(new Operation::Step(),
                             ExpressionTreeNode(new Operation::Subtract(), children[0], children[1]));
-    return ExpressionTreeNode(new Operation::Select(), {step, childDerivs[0], childDerivs[1]});
+    std::vector<ExpressionTreeNode> tmp;
+    tmp.push_back(step);
+    tmp.push_back(childDerivs[0]);
+    tmp.push_back(childDerivs[1]);
+//     return ExpressionTreeNode(new Operation::Select(), {step, childDerivs[0], childDerivs[1]});
+    return ExpressionTreeNode(new Operation::Select(), tmp);
 }
 
 ExpressionTreeNode Operation::Abs::differentiate(const std::vector<ExpressionTreeNode>& children, const std::vector<ExpressionTreeNode>& childDerivs, const std::string& variable) const {
@@ -421,5 +431,10 @@ ExpressionTreeNode Operation::Ceil::differentiate(const std::vector<ExpressionTr
 }
 
 ExpressionTreeNode Operation::Select::differentiate(const std::vector<ExpressionTreeNode>& children, const std::vector<ExpressionTreeNode>& childDerivs, const std::string& variable) const {
-    return ExpressionTreeNode(new Operation::Select(), {children[0], childDerivs[1], childDerivs[2]});
+    std::vector<ExpressionTreeNode> tmp;
+    tmp.push_back(children[0]);
+    tmp.push_back(childDerivs[1]);
+    tmp.push_back(childDerivs[2]);
+//     return ExpressionTreeNode(new Operation::Select(), {children[0], childDerivs[1], childDerivs[2]});
+    return ExpressionTreeNode(new Operation::Select(), tmp);
 }

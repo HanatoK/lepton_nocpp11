@@ -118,7 +118,7 @@ ExpressionTreeNode ParsedExpression::preevaluateVariables(const ExpressionTreeNo
 }
 
 ExpressionTreeNode ParsedExpression::precalculateConstantSubexpressions(const ExpressionTreeNode& node, map<int, ExpressionTreeNode>& nodeCache) {
-    auto cached = nodeCache.find(node.tag);
+    map<int, ExpressionTreeNode>::const_iterator cached = nodeCache.find(node.tag);
     if (cached != nodeCache.end())
         return cached->second;
     vector<ExpressionTreeNode> children(node.getChildren().size());
@@ -143,7 +143,7 @@ ExpressionTreeNode ParsedExpression::substituteSimplerExpression(const Expressio
     vector<ExpressionTreeNode> children(node.getChildren().size());
     for (int i = 0; i < (int) children.size(); i++) {
         const ExpressionTreeNode& child = node.getChildren()[i];
-        auto cached = nodeCache.find(child.tag);
+        map<int, ExpressionTreeNode>::const_iterator cached = nodeCache.find(child.tag);
         if (cached == nodeCache.end()) {
             children[i] = substituteSimplerExpression(child, nodeCache);
             nodeCache[child.tag] = children[i];
@@ -343,7 +343,7 @@ ParsedExpression ParsedExpression::differentiate(const string& variable) const {
 }
 
 ExpressionTreeNode ParsedExpression::differentiate(const ExpressionTreeNode& node, const string& variable, map<int, ExpressionTreeNode>& nodeCache) {
-    auto cached = nodeCache.find(node.tag);
+    map<int, ExpressionTreeNode>::const_iterator cached = nodeCache.find(node.tag);
     if (cached != nodeCache.end())
         return cached->second;
     vector<ExpressionTreeNode> childDerivs(node.getChildren().size());

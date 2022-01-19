@@ -83,13 +83,13 @@ public:
      */
     ExpressionTreeNode(Operation* operation);
     ExpressionTreeNode(const ExpressionTreeNode& node);
-    ExpressionTreeNode(ExpressionTreeNode&& node);
+//     ExpressionTreeNode(ExpressionTreeNode&& node);
     ExpressionTreeNode();
     ~ExpressionTreeNode();
     bool operator==(const ExpressionTreeNode& node) const;
     bool operator!=(const ExpressionTreeNode& node) const;
     ExpressionTreeNode& operator=(const ExpressionTreeNode& node);
-    ExpressionTreeNode& operator=(ExpressionTreeNode&& node);
+//     ExpressionTreeNode& operator=(ExpressionTreeNode&& node);
     /**
      * Get the Operation performed by this node.
      */

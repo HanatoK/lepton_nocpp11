@@ -63,10 +63,10 @@ ExpressionTreeNode::ExpressionTreeNode(Operation* operation) : operation(operati
 ExpressionTreeNode::ExpressionTreeNode(const ExpressionTreeNode& node) : operation(node.operation == NULL ? NULL : node.operation->clone()), children(node.getChildren()) {
 }
 
-ExpressionTreeNode::ExpressionTreeNode(ExpressionTreeNode&& node) : operation(node.operation), children(move(node.children)) {
-    node.operation = NULL;
-    node.children.clear();
-}
+// ExpressionTreeNode::ExpressionTreeNode(ExpressionTreeNode&& node) : operation(node.operation), children(move(node.children)) {
+//     node.operation = NULL;
+//     node.children.clear();
+// }
 
 ExpressionTreeNode::ExpressionTreeNode() : operation(NULL) {
 }
@@ -104,15 +104,15 @@ ExpressionTreeNode& ExpressionTreeNode::operator=(const ExpressionTreeNode& node
     return *this;
 }
 
-ExpressionTreeNode& ExpressionTreeNode::operator=(ExpressionTreeNode&& node) {
-    if (operation != NULL)
-        delete operation;
-    operation = node.operation;
-    children = move(node.children);
-    node.operation = NULL;
-    node.children.clear();
-    return *this;
-}
+// ExpressionTreeNode& ExpressionTreeNode::operator=(ExpressionTreeNode&& node) {
+//     if (operation != NULL)
+//         delete operation;
+//     operation = node.operation;
+//     children = move(node.children);
+//     node.operation = NULL;
+//     node.children.clear();
+//     return *this;
+// }
 
 const Operation& ExpressionTreeNode::getOperation() const {
     return *operation;
@@ -128,8 +128,11 @@ void ExpressionTreeNode::assignTags(vector<const ExpressionTreeNode*>& examples)
     // optimize other operations.
 
     int numTags = examples.size();
-    for (const ExpressionTreeNode& child : getChildren())
-        child.assignTags(examples);
+//     for (const ExpressionTreeNode& child : getChildren())
+//         child.assignTags(examples);
+    for (size_t i = 0; i < getChildren().size(); ++i) {
+        getChildren()[i].assignTags(examples);
+    }
     if (numTags == examples.size()) {
         // All the children matched existing tags, so possibly this node does too.
         
