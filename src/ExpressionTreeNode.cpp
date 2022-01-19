@@ -38,25 +38,25 @@ using namespace Lepton;
 using namespace std;
 
 ExpressionTreeNode::ExpressionTreeNode(Operation* operation, const vector<ExpressionTreeNode>& children) : operation(operation), children(children) {
-    if (operation->getNumArguments() != children.size())
+    if ((size_t)operation->getNumArguments() != children.size())
         throw Exception("wrong number of arguments to function: "+operation->getName());
 }
 
 ExpressionTreeNode::ExpressionTreeNode(Operation* operation, const ExpressionTreeNode& child1, const ExpressionTreeNode& child2) : operation(operation) {
     children.push_back(child1);
     children.push_back(child2);
-    if (operation->getNumArguments() != children.size())
+    if ((size_t)operation->getNumArguments() != children.size())
         throw Exception("wrong number of arguments to function: "+operation->getName());
 }
 
 ExpressionTreeNode::ExpressionTreeNode(Operation* operation, const ExpressionTreeNode& child) : operation(operation) {
     children.push_back(child);
-    if (operation->getNumArguments() != children.size())
+    if ((size_t)operation->getNumArguments() != children.size())
         throw Exception("wrong number of arguments to function: "+operation->getName());
 }
 
 ExpressionTreeNode::ExpressionTreeNode(Operation* operation) : operation(operation) {
-    if (operation->getNumArguments() != children.size())
+    if ((size_t)operation->getNumArguments() != children.size())
         throw Exception("wrong number of arguments to function: "+operation->getName());
 }
 
@@ -127,7 +127,7 @@ void ExpressionTreeNode::assignTags(vector<const ExpressionTreeNode*>& examples)
     // tag if and only if they (and all their children) are equal.  This is used to
     // optimize other operations.
 
-    int numTags = examples.size();
+    size_t numTags = examples.size();
 //     for (const ExpressionTreeNode& child : getChildren())
 //         child.assignTags(examples);
     for (size_t i = 0; i < getChildren().size(); ++i) {
@@ -136,10 +136,10 @@ void ExpressionTreeNode::assignTags(vector<const ExpressionTreeNode*>& examples)
     if (numTags == examples.size()) {
         // All the children matched existing tags, so possibly this node does too.
         
-        for (int i = 0; i < examples.size(); i++) {
+        for (size_t i = 0; i < examples.size(); i++) {
             const ExpressionTreeNode& example = *examples[i];
             bool matches = (getChildren().size() == example.getChildren().size() && getOperation() == example.getOperation());
-            for (int j = 0; matches && j < getChildren().size(); j++)
+            for (size_t j = 0; matches && j < getChildren().size(); j++)
                 if (getChildren()[j].tag != example.getChildren()[j].tag)
                     matches = false;
             if (matches) {
